@@ -318,7 +318,8 @@ class GoogleDriveHelper:
                 buttons = button_builder.ButtonMaker()
                 buttons.buildbutton("⚡Drive Link⚡", self.__G_DRIVE_DIR_BASE_DOWNLOAD_URL.format(dir_id))
                 if INDEX_URL is not None:
-                    url = requests.utils.requote_uri(f'{INDEX_URL}/{meta.get("name")}/')
+                    url_path = requests.utils.quote(f'{meta.get("name")}')
+                    url = f'{INDEX_URL}/{url_path}/'
                     buttons.buildbutton("💥Index Link💥", url)
             else:
                 file = self.copyFile(meta.get('id'), parent_id)
@@ -330,7 +331,8 @@ class GoogleDriveHelper:
                 except TypeError:
                     pass
                 if INDEX_URL is not None:
-                        url = requests.utils.requote_uri(f'{INDEX_URL}/{file.get("name")}')
+                        url_path = requests.utils.quote(f'{file.get("name")}')
+                        url = f'{INDEX_URL}/{url_path}'
                         buttons.buildbutton("💥Index Link💥", url)
         except Exception as err:
             if isinstance(err, RetryError):
@@ -449,19 +451,22 @@ class GoogleDriveHelper:
                                                pageSize=20,
                                                fields='files(id, name, mimeType, size)',
                                                orderBy='modifiedTime desc').execute()
+
         for file in response.get('files', []):
             if file.get(
                     'mimeType') == "application/vnd.google-apps.folder":  # Detect Whether Current Entity is a Folder or File.
                 msg += f"⁍ <a href='https://drive.google.com/drive/folders/{file.get('id')}'>{file.get('name')}" \
                        f"</a> (folder)"
                 if INDEX_URL is not None:
-                    url = requests.utils.requote_uri(f'{INDEX_URL}/{file.get("name")}/')
+                    url_path = requests.utils.quote(f'{file.get("name")}')
+                    url = f'{INDEX_URL}/{url_path}/'
                     msg += f' | <a href="{url}"> Index URL</a>'
             else:
                 msg += f"⁍ <a href='https://drive.google.com/uc?id={file.get('id')}" \
                        f"&export=download'>{file.get('name')}</a> ({get_readable_file_size(int(file.get('size')))})"
                 if INDEX_URL is not None:
-                    url = requests.utils.requote_uri(f'{INDEX_URL}/{file.get("name")}')
+                    url_path = requests.utils.quote(f'{file.get("name")}')
+                    url = f'{INDEX_URL}/{url_path}'
                     msg += f' | <a href="{url}"> Index URL</a>'
             msg += '\n'
         return msg
