@@ -11,13 +11,13 @@ from bot import (
     DOWNLOAD_DIR,
     INDEX_URL,
     IS_TEAM_DRIVE,
+    LOGGER,
     USE_SERVICE_ACCOUNTS,
     download_dict,
     parent_id,
-    LOGGER,
 )
 from bot.helper.ext_utils.bot_utils import *
-from bot.helper.ext_utils.fs_utils import get_mime_type
+from bot.helper.ext_utils.fs_utils import get_mime_type, get_path_size
 from bot.helper.telegram_helper import button_builder
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account
@@ -27,7 +27,6 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 from telegram import InlineKeyboardMarkup
 from tenacity import *
-
 
 logging.getLogger("googleapiclient.discovery").setLevel(logging.ERROR)
 SERVICE_ACCOUNT_INDEX = 0
@@ -260,6 +259,7 @@ class GoogleDriveHelper:
         self.__listener.onUploadStarted()
         file_dir = f"{DOWNLOAD_DIR}{self.__listener.message.message_id}"
         file_path = f"{file_dir}/{file_name}"
+        size = get_readable_file_size(get_path_size(file_path))
         LOGGER.info("Uploading File: " + file_path)
         self.start_time = time.time()
         self.updater = setInterval(self.update_interval, self._on_upload_progress)
@@ -303,7 +303,7 @@ class GoogleDriveHelper:
             finally:
                 self.updater.cancel()
         LOGGER.info(download_dict)
-        self.__listener.onUploadComplete(link)
+        self.__listener.onUploadComplete(link, size)
         LOGGER.info("Deleting downloaded file/folder..")
         return link
 

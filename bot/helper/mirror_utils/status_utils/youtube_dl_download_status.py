@@ -6,7 +6,7 @@ from bot.helper.ext_utils.bot_utils import (
 )
 
 from .status import Status
-
+from bot.helper.ext_utils.fs_utils import get_path_size
 
 class YoutubeDLDownloadStatus(Status):
     def __init__(self, obj, listener):
@@ -21,7 +21,10 @@ class YoutubeDLDownloadStatus(Status):
         return f"{DOWNLOAD_DIR}{self.uid}"
 
     def processed_bytes(self):
-        return self.obj.downloaded_bytes
+        if self.obj.downloaded_bytes != 0:
+          return self.obj.downloaded_bytes
+        else:
+          return get_path_size(f"{DOWNLOAD_DIR}{self.uid}")
 
     def size_raw(self):
         return self.obj.size
