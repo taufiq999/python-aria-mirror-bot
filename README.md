@@ -1,3 +1,35 @@
+# Important - Read these points first
+- Original repo is https://github.com/lzzy12/python-aria-mirror-bot
+- I have collected some cool features from various repositories and merged them in one.
+- So, credits goes to original repo holder, not to me. I have just collected them.
+- This (or any custom) repo is not supported in official bot support group.
+- So if you have any issue then check first that issue is in official repo or not, You are only allowed to report that issue in bot support group if that issue is also present in official repo.
+
+## Features Coming soon....
+- Rename Drive files
+
+Let's have some chit chat here - [@Magneto_chit_chat](https://t.me/magneto_chit_chat)
+Note :- it is not a Bot Support group. It's only for discussing rubbish things bcoz i want your help to learn coding 😜🤪.
+
+
+## Credits :-
+- First of all, full credit goes to [Shivam Jha aka lzzy12](https://github.com/lzzy12) and [JaskaranSM aka Zero Cool](https://github.com/jaskaranSM) They build up this bot from scratch.
+- Then a huge thanks to [Sreeraj V R](https://github.com/SVR666) You can checkout his [repo here](https://github.com/SVR666/LoaderX-Bot)
+- Features added from [Sreeraj V R's](https://github.com/SVR666) repo -
+```
+1. Added Inline Buttons
+2. Added /del command to delete files from drive
+3. /list module will post search result on telegra.ph
+```
+- Special thanks to [archie](https://github.com/archie9211) for very much useful feature **Unzipmirror**
+- Features added from [archie's](https://github.com/archie9211) repo
+```
+1. unzipmirror
+2. Update tracker list dynamically
+3. Fix SSL handsake error
+```
+
+
 # What is this repo about?
 This is a telegram bot writen in python for mirroring files on the internet to our beloved Google Drive.
 

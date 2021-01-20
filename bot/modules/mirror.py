@@ -105,7 +105,7 @@ class MirrorListener(listeners.MirrorListeners):
         else:
             path = f"{DOWNLOAD_DIR}{self.uid}/{name}"
         up_name = pathlib.PurePath(path).name
-        up_path = f'{DOWNLOAD_DIR}{self.uid}/{up_name}'
+        up_path = f"{DOWNLOAD_DIR}{self.uid}/{up_name}"
         LOGGER.info(f"Upload Name : {up_name}")
         drive = gdriveTools.GoogleDriveHelper(up_name, self)
         size = fs_utils.get_path_size(up_path)
@@ -198,10 +198,15 @@ class MirrorListener(listeners.MirrorListeners):
 
 def _mirror(bot, update, isTar=False, extract=False):
     message_args = update.message.text.split(" ")
+    name_args = update.message.text.split("|")
     try:
         link = message_args[1]
     except IndexError:
         link = ""
+    try:
+        name = name_args[1]
+    except IndexError:
+        name = ""
     LOGGER.info(link)
     link = link.strip()
     reply_to = update.message.reply_to_message
@@ -214,13 +219,17 @@ def _mirror(bot, update, isTar=False, extract=False):
                 file = i
                 break
 
-        if len(link) == 0:
+        if (
+            not bot_utils.is_url(link)
+            and not bot_utils.is_magnet(link)
+            or len(link) == 0
+        ):
             if file is not None:
                 if file.mime_type != "application/x-bittorrent":
                     listener = MirrorListener(bot, update, isTar, tag, extract)
                     tg_downloader = TelegramDownloadHelper(listener)
                     tg_downloader.add_download(
-                        reply_to, f"{DOWNLOAD_DIR}{listener.uid}/"
+                        reply_to, f"{DOWNLOAD_DIR}{listener.uid}/", name
                     )
                     sendStatusMessage(update, bot)
                     if len(Interval) == 0:
@@ -244,7 +253,7 @@ def _mirror(bot, update, isTar=False, extract=False):
         LOGGER.info(f"{link}: {e}")
 
     listener = MirrorListener(bot, update, isTar, tag, extract)
-    ariaDlManager.add_download(link, f"{DOWNLOAD_DIR}/{listener.uid}/", listener)
+    ariaDlManager.add_download(link, f"{DOWNLOAD_DIR}/{listener.uid}/", listener, name)
     sendStatusMessage(update, bot)
     if len(Interval) == 0:
         Interval.append(
