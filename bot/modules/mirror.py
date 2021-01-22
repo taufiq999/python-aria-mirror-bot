@@ -39,17 +39,24 @@ from bot.helper.telegram_helper.message_utils import *
 from telegram import InlineKeyboardMarkup
 from telegram.ext import CommandHandler
 
+from bot.helper.telegram_helper import button_build
+import pathlib
+import os
+import subprocess
+import threading
+import re
 
 ariaDlManager = AriaDownloadHelper()
 ariaDlManager.start_listener()
 
 
 class MirrorListener(listeners.MirrorListeners):
-    def __init__(self, bot, update, isTar=False, tag=None, extract=False):
+    def __init__(self, bot, update, pswd, isTar=False, tag=None, extract=False):
         super().__init__(bot, update)
         self.isTar = isTar
         self.tag = tag
         self.extract = extract
+        self.pswd = pswd
 
     def onDownloadStarted(self):
         pass
@@ -90,7 +97,11 @@ class MirrorListener(listeners.MirrorListeners):
                 LOGGER.info(f"Extracting : {name} ")
                 with download_dict_lock:
                     download_dict[self.uid] = ExtractStatus(name, m_path, size)
-                archive_result = subprocess.run(["extract", m_path])
+                pswd = self.pswd
+                if pswd is not None:
+                    archive_result = subprocess.run(["pextract", m_path, pswd])
+                else:
+                    archive_result = subprocess.run(["extract", m_path])
                 if archive_result.returncode == 0:
                     threading.Thread(target=os.remove, args=(m_path,)).start()
                     LOGGER.info(f"Deleting archive : {m_path}")
@@ -207,6 +218,10 @@ def _mirror(bot, update, isTar=False, extract=False):
         name = name_args[1]
     except IndexError:
         name = ""
+    pswd = re.search("(?<=pswd: )(.*)", update.message.text)
+    if pswd is not None:
+        pswd = pswd.groups()
+        pswd = " ".join(pswd)
     LOGGER.info(link)
     link = link.strip()
     reply_to = update.message.reply_to_message
@@ -226,7 +241,7 @@ def _mirror(bot, update, isTar=False, extract=False):
         ):
             if file is not None:
                 if file.mime_type != "application/x-bittorrent":
-                    listener = MirrorListener(bot, update, isTar, tag, extract)
+                    listener = MirrorListener(bot, update, pswd, isTar, tag, extract)
                     tg_downloader = TelegramDownloadHelper(listener)
                     tg_downloader.add_download(
                         reply_to, f"{DOWNLOAD_DIR}{listener.uid}/", name
@@ -252,7 +267,7 @@ def _mirror(bot, update, isTar=False, extract=False):
     except DirectDownloadLinkException as e:
         LOGGER.info(f"{link}: {e}")
 
-    listener = MirrorListener(bot, update, isTar, tag, extract)
+    listener = MirrorListener(bot, update, pswd, isTar, tag, extract)
     ariaDlManager.add_download(link, f"{DOWNLOAD_DIR}/{listener.uid}/", listener, name)
     sendStatusMessage(update, bot)
     if len(Interval) == 0:

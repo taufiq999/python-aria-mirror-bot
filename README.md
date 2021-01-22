@@ -47,7 +47,8 @@ This project is heavily inspired from @out386 's telegram bot which is written i
 - Service account support
 - Mirror all youtube-dl supported links
 - Mirror telegram files
-
+- For extracting password protected files and using custom filename see these examples :-
+> https://telegra.ph/Magneto-Python-Aria---Custom-Filename-Examples-01-20
 # Upcoming features (TODOs):
 
 # How to deploy?
