@@ -19,7 +19,7 @@ from bot.helper.telegram_helper.message_utils import (
     update_all_messages,
 )
 from telegram import Bot, Update
-from telegram.ext import CommandHandler, run_async
+from telegram.ext import CommandHandler
 
 from .mirror import MirrorListener
 
@@ -56,7 +56,6 @@ def _watch(bot: Bot, update: Update, args: list, isTar=False):
         )
 
 
-@run_async
 def watchTar(update, context):
     _watch(context.bot, update, context.args, True)
 
@@ -70,12 +69,14 @@ mirror_handler = CommandHandler(
     watch,
     pass_args=True,
     filters=CustomFilters.authorized_chat | CustomFilters.authorized_user,
+    run_async=True,
 )
 tar_mirror_handler = CommandHandler(
     BotCommands.TarWatchCommand,
     watchTar,
     pass_args=True,
     filters=CustomFilters.authorized_chat | CustomFilters.authorized_user,
+    run_async=True,
 )
 dispatcher.add_handler(mirror_handler)
 dispatcher.add_handler(tar_mirror_handler)

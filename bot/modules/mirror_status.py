@@ -2,7 +2,6 @@ import threading
 from time import sleep
 
 from bot import (
-    DOWNLOAD_STATUS_UPDATE_INTERVAL,
     dispatcher,
     status_reply_dict,
     status_reply_dict_lock,
@@ -11,11 +10,9 @@ from bot.helper.ext_utils.bot_utils import get_readable_message
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import *
-from telegram.error import BadRequest
-from telegram.ext import CommandHandler, run_async
+from telegram.ext import CommandHandler
 
 
-@run_async
 def mirror_status(update, context):
     message = get_readable_message()
     if len(message) == 0:
@@ -38,5 +35,6 @@ mirror_status_handler = CommandHandler(
     BotCommands.StatusCommand,
     mirror_status,
     filters=CustomFilters.authorized_chat | CustomFilters.authorized_user,
+    run_async=True,
 )
 dispatcher.add_handler(mirror_status_handler)

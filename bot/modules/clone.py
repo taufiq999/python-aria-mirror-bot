@@ -7,7 +7,6 @@ from bot.helper.telegram_helper.message_utils import *
 from telegram.ext import CommandHandler
 
 
-@new_thread
 def cloneNode(update, context):
     args = update.message.text.split(" ", maxsplit=1)
     if len(args) > 1:
@@ -28,5 +27,6 @@ clone_handler = CommandHandler(
     BotCommands.CloneCommand,
     cloneNode,
     filters=CustomFilters.authorized_chat | CustomFilters.authorized_user,
+    run_async=True,
 )
 dispatcher.add_handler(clone_handler)

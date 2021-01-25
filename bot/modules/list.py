@@ -8,7 +8,6 @@ from bot.helper.telegram_helper.message_utils import auto_delete_message, sendMe
 from telegram.ext import CommandHandler, run_async
 
 
-@run_async
 def list_drive(update, context):
     message = update.message.text
     try:
@@ -32,5 +31,6 @@ list_handler = CommandHandler(
     BotCommands.ListCommand,
     list_drive,
     filters=CustomFilters.authorized_chat | CustomFilters.authorized_user,
+    run_async=True,
 )
 dispatcher.add_handler(list_handler)

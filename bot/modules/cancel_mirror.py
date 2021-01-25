@@ -6,10 +6,9 @@ from bot.helper.ext_utils.fs_utils import clean_download
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import *
-from telegram.ext import CommandHandler, run_async
+from telegram.ext import CommandHandler
 
 
-@run_async
 def cancel_mirror(update, context):
     args = update.message.text.split(" ", maxsplit=1)
     mirror_message = None
@@ -52,7 +51,6 @@ def cancel_mirror(update, context):
     clean_download(f"{DOWNLOAD_DIR}{mirror_message.message_id}/")
 
 
-@run_async
 def cancel_all(update, context):
     with download_dict_lock:
         count = 0
@@ -72,9 +70,13 @@ cancel_mirror_handler = CommandHandler(
     cancel_mirror,
     filters=(CustomFilters.authorized_chat | CustomFilters.authorized_user)
     & CustomFilters.mirror_owner_filter,
+    run_async=True,
 )
 cancel_all_handler = CommandHandler(
-    BotCommands.CancelAllCommand, cancel_all, filters=CustomFilters.owner_filter
+    BotCommands.CancelAllCommand,
+    cancel_all,
+    filters=CustomFilters.owner_filter,
+    run_async=True,
 )
 dispatcher.add_handler(cancel_all_handler)
 dispatcher.add_handler(cancel_mirror_handler)
