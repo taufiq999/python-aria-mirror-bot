@@ -61,14 +61,7 @@ status_reply_dict = {}
 # Key: update.message.message_id
 # Value: An object of Status
 download_dict = {}
-# Stores list of users and chats the bot is authorized to use in
-AUTHORIZED_CHATS = set()
-if os.path.exists("authorized_chats.txt"):
-    with open("authorized_chats.txt", "r+") as f:
-        lines = f.readlines()
-        for line in lines:
-            #    LOGGER.info(line.split())
-            AUTHORIZED_CHATS.add(int(line.split()[0]))
+
 try:
     BOT_TOKEN = getConfig("BOT_TOKEN")
     parent_id = getConfig("GDRIVE_FOLDER_ID")
@@ -84,6 +77,23 @@ try:
 except KeyError as e:
     LOGGER.error("One or more env variables missing! Exiting now")
     exit(1)
+
+# Stores list of users and chats the bot is authorized to use in
+AUTHORIZED_CHATS = set()
+try:
+    with open("authorized_chats.txt", "r+") as f:
+        lines = f.readlines()
+        for line in lines:
+            #    LOGGER.info(line.split())
+            AUTHORIZED_CHATS.add(int(line.split()[0]))
+except OSError:
+    pass
+try:
+    for chats in getConfig('AUTHORIZED_CHATS').split(" "):
+        AUTHORIZED_CHATS.add(int(chats))
+except:
+    pass
+
 try:
     INDEX_URL = getConfig("INDEX_URL")
     if len(INDEX_URL) == 0:
