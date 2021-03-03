@@ -80,10 +80,9 @@ except KeyError as e:
     exit(1)
 
 LOGGER.info("Generating USER_SESSION_STRING")
-with Client(
+app = Client(
     ":memory:", api_id=int(TELEGRAM_API), api_hash=TELEGRAM_HASH, bot_token=BOT_TOKEN
-) as app:
-    USER_SESSION_STRING = app.export_session_string()
+)
 
 # Stores list of users and chats the bot is authorized to use in
 AUTHORIZED_CHATS = set()

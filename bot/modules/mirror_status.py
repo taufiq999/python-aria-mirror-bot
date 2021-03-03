@@ -1,5 +1,4 @@
 import threading
-from time import sleep
 
 from bot import (
     dispatcher,

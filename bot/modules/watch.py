@@ -1,12 +1,6 @@
 import threading
 
-from bot import (
-    DOWNLOAD_DIR,
-    DOWNLOAD_STATUS_UPDATE_INTERVAL,
-    LOGGER,
-    Interval,
-    dispatcher,
-)
+from bot import DOWNLOAD_DIR, DOWNLOAD_STATUS_UPDATE_INTERVAL, Interval, dispatcher
 from bot.helper.ext_utils.bot_utils import setInterval
 from bot.helper.mirror_utils.download_utils.youtube_dl_download_helper import (
     YoutubeDLHelper,
@@ -18,7 +12,7 @@ from bot.helper.telegram_helper.message_utils import (
     sendStatusMessage,
     update_all_messages,
 )
-from telegram import Bot, Update
+from telegram import Bot
 from telegram.ext import CommandHandler
 
 from .mirror import MirrorListener

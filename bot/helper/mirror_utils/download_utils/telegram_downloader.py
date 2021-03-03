@@ -7,6 +7,7 @@ from bot import (
     TELEGRAM_API,
     TELEGRAM_HASH,
     USER_SESSION_STRING,
+    app,
     download_dict,
     download_dict_lock,
 )
@@ -29,12 +30,7 @@ class TelegramDownloadHelper(DownloadHelper):
         self.__name = ""
         self.__gid = ""
         self.__start_time = time.time()
-        self.__bot = Client(
-            api_id=TELEGRAM_API,
-            api_hash=TELEGRAM_HASH,
-            session_name=USER_SESSION_STRING,
-        )
-        self.__bot.start()
+        self.__user_bot = app
         self.__is_cancelled = False
 
     @property

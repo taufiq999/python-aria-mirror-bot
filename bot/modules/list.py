@@ -5,7 +5,7 @@ from bot.helper.mirror_utils.upload_utils.gdriveTools import GoogleDriveHelper
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import auto_delete_message, sendMessage
-from telegram.ext import CommandHandler, run_async
+from telegram.ext import CommandHandler
 
 
 def list_drive(update, context):
