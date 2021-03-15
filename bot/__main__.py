@@ -73,50 +73,36 @@ def log(update, context):
 
 @run_async
 def bot_help(update, context):
-    help_string_adm = f'''
-/{BotCommands.StartCommand} <b>: Alive or Not</b>
-/{BotCommands.MirrorCommand} <b>[url OR magnet_link]: Mirror & upload</b>
-/{BotCommands.TarMirrorCommand} <b>[url OR magnet_link]: Mirror & upload as .tar</b>
-/{BotCommands.UnzipMirrorCommand} <b>[url OR magnet_link] : Unzip & mirror</b>
-/{BotCommands.WatchCommand} <b>[link]: Mirror YT video</b>
-/{BotCommands.TarWatchCommand} <b>[link]: Mirror YT video & upload as .tar</b>
-/{BotCommands.CloneCommand} <b>[link]: Mirror drive folder</b>
-/{BotCommands.CancelMirror} <b>: Reply to dwnld cmd</b>
-/{BotCommands.CancelAllCommand} <b>: Cancel all</b>
-/{BotCommands.StatusCommand} <b>: Shows a status of all the downloads</b>
-/{BotCommands.ListCommand} <b>[name]: Searches in the drive folder</b>
-/{BotCommands.deleteCommand} <b>[link]: Delete from drive(Only owner)</b>
-/{BotCommands.StatsCommand} <b>: Show Stats of the machine</b>
-/{BotCommands.PingCommand} <b>: Check ping!</b>
-/{BotCommands.RestartCommand} <b>: Restart bot(Only owner)</b>
-/{BotCommands.AuthorizeCommand} <b>: Authorize(Only owner & sudo)</b>
-/{BotCommands.UnAuthorizeCommand} <b>: Unauthorize(Only owner & sudo)</b>
-/{BotCommands.AuthorizedUsersCommand} <b>: authorized users(Only owner & sudo)</b>
-/{BotCommands.AddSudoCommand} <b>: Add sudo user(Only owner)</b>
-/{BotCommands.RmSudoCommand} <b>: Remove sudo users(Only owner)</b>
-/{BotCommands.LogCommand} <b>: Get log file(Only owner)</b>
-
-'''
 
     help_string = f'''
-/{BotCommands.StartCommand} <b>: Alive or Not</b>
-/{BotCommands.MirrorCommand} <b>[url OR magnet_link]: Mirror & upload</b>
-/{BotCommands.TarMirrorCommand} <b>[url OR magnet_link]: Mirror & upload as .tar</b>
-/{BotCommands.UnzipMirrorCommand} <b>[url OR magnet_link] : Unzip & mirror</b>
+/{BotCommands.MirrorCommand} <b>[url OR magnet_link] OR reply to tg media: Mirror & upload</b>
+/{BotCommands.TarMirrorCommand} <b>[url OR magnet_link] OR reply to tg media: Mirror & upload as .tar</b>
+/{BotCommands.UnzipMirrorCommand} <b>[url OR magnet_link] OR reply to tg media: Unzip & mirror</b>
 /{BotCommands.WatchCommand} <b>[link]: Mirror YT video</b>
 /{BotCommands.TarWatchCommand} <b>[link]: Mirror YT video & upload as .tar</b>
 /{BotCommands.CloneCommand} <b>[link]: Mirror drive folder</b>
-/{BotCommands.CancelMirror} <b>: Reply to dwnld cmd</b>
-/{BotCommands.CancelAllCommand} <b>: Reply to dwnld cmd</b>
-/{BotCommands.StatusCommand} <b>: Shows a status of all the downloads</b>
-/{BotCommands.ListCommand} <b>[name]: Searches in the drive folder</b>
+/{BotCommands.CancelMirror} <b>[gid] OR reply to dwnld cmd: Cancel the download</b>
+/{BotCommands.StatusCommand} <b>: Shows status of all downloads</b>
+/{BotCommands.ListCommand} <b>[query]: search for file/folder</b>
 /{BotCommands.StatsCommand} <b>: Show Stats of the machine</b>
-/{BotCommands.PingCommand} <b>: Check ping!</b>
+/{BotCommands.PingCommand} <b>: Ping!</b>
 
 '''
 
+    help_string_adm = f'''
+    <b>[Owner only]</b>
+/{BotCommands.CancelAllCommand} <b>: Cancel all downloads</b>
+/{BotCommands.deleteCommand} <b>[link]: Delete from drive</b>
+/{BotCommands.RestartCommand} <b>: Restart bot</b>
+/{BotCommands.AuthorizeCommand} <b>: Authorize chat or user</b>
+/{BotCommands.UnAuthorizeCommand} <b>: Unauthorize chat or user</b>
+/{BotCommands.LogCommand} <b>: Get log file</b>
+
+'''
+
+
     if CustomFilters.sudo_user(update) or CustomFilters.owner_filter(update):
-        sendMessage(help_string_adm, context.bot, update)
+        sendMessage(help_string+help_string_adm, context.bot, update)
     else:
         sendMessage(help_string, context.bot, update)
 
