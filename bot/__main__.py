@@ -89,8 +89,7 @@ def bot_help(update, context):
 
 '''
 
-    help_string_adm = f'''
-    <b>[Owner only]</b>
+    help_string_adm = f'''    <b>[Owner only]</b>
 /{BotCommands.CancelAllCommand} <b>: Cancel all downloads</b>
 /{BotCommands.deleteCommand} <b>[link]: Delete from drive</b>
 /{BotCommands.RestartCommand} <b>: Restart bot</b>
@@ -101,7 +100,7 @@ def bot_help(update, context):
 '''
 
 
-    if CustomFilters.sudo_user(update) or CustomFilters.owner_filter(update):
+    if CustomFilters.owner_filter(update):
         sendMessage(help_string+help_string_adm, context.bot, update)
     else:
         sendMessage(help_string, context.bot, update)

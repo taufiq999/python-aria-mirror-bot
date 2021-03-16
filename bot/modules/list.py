@@ -9,15 +9,18 @@ from bot.helper.telegram_helper.bot_commands import BotCommands
 @run_async
 def list_drive(update,context):
     message = update.message.text
-    search = message.split(' ',maxsplit=1)[1]
-    LOGGER.info(f"Searching: {search}")
-    gdrive = GoogleDriveHelper(None)
-    msg = gdrive.drive_list(search)
-    if msg:
-        reply_message = sendMessage(msg, context.bot, update)
-    else:
-        reply_message = sendMessage('No result found', context.bot, update)
-
+    try:
+        search = message.split(' ',maxsplit=1)[1]
+        LOGGER.info(f"Searching: {search}")
+        gdrive = GoogleDriveHelper(None)
+        msg = gdrive.drive_list(search)
+        if msg:
+            reply_message = sendMessage(msg, context.bot, update)
+        else:
+            reply_message = sendMessage('No result found', context.bot, update)
+    except IndexError:
+        reply_message = sendMessage('Provide a search query', context.bot, update)
+        
     threading.Thread(target=auto_delete_message, args=(context.bot, update.message, reply_message)).start()
 
 
