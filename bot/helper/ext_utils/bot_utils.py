@@ -23,9 +23,9 @@ class MirrorStatus:
 
 
 PROGRESS_MAX_SIZE = 100 // 8
-PROGRESS_INCOMPLETE = ['▏', '▎', '▍', '▌', '▋', '▊', '▉']
+PROGRESS_INCOMPLETE = ["▏", "▎", "▍", "▌", "▋", "▊", "▉"]
 
-SIZE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+SIZE_UNITS = ["B", "KB", "MB", "GB", "TB", "PB"]
 
 
 class setInterval:
@@ -48,23 +48,26 @@ class setInterval:
 
 def get_readable_file_size(size_in_bytes) -> str:
     if size_in_bytes is None:
-        return '0B'
+        return "0B"
     index = 0
     while size_in_bytes >= 1024:
         size_in_bytes /= 1024
         index += 1
     try:
-        return f'{round(size_in_bytes, 2)}{SIZE_UNITS[index]}'
+        return f"{round(size_in_bytes, 2)}{SIZE_UNITS[index]}"
     except IndexError:
-        return 'File too large'
+        return "File too large"
 
 
 def getDownloadByGid(gid):
     with download_dict_lock:
         for dl in download_dict.values():
             status = dl.status()
-            if status != MirrorStatus.STATUS_UPLOADING and status != MirrorStatus.STATUS_ARCHIVING\
-                    and status != MirrorStatus.STATUS_EXTRACTING:
+            if (
+                status != MirrorStatus.STATUS_UPLOADING
+                and status != MirrorStatus.STATUS_ARCHIVING
+                and status != MirrorStatus.STATUS_EXTRACTING
+            ):
                 if dl.gid() == gid:
                     return dl
     return None
@@ -80,10 +83,10 @@ def get_progress_bar_string(status):
     p = min(max(p, 0), 100)
     cFull = p // 8
     cPart = p % 8 - 1
-    p_str = '█' * cFull
+    p_str = "█" * cFull
     if cPart >= 0:
         p_str += PROGRESS_INCOMPLETE[cPart]
-    p_str += ' ' * (PROGRESS_MAX_SIZE - cFull)
+    p_str += " " * (PROGRESS_MAX_SIZE - cFull)
     p_str = f"[{p_str}]"
     return p_str
 
@@ -94,36 +97,43 @@ def get_readable_message():
         for download in list(download_dict.values()):
             msg += f"<b>FileName :</b> <i>{download.name()}</i> \n\n<b>Status : </b> "
             msg += download.status()
-            if download.status() != MirrorStatus.STATUS_ARCHIVING and download.status() != MirrorStatus.STATUS_EXTRACTING:
-                msg += f"\n\n<code>{get_progress_bar_string(download)} {download.progress()}</code>" \
-                       f"\n\n<b>Progress :</b> {get_readable_file_size(download.processed_bytes())}" \
-                       f"\n\n<b>Size :</b> {download.size()}" \
-                       f"\n\n<b>Speed :</b> {download.speed()} <b>| ETA :</b> {download.eta()} "
+            if (
+                download.status() != MirrorStatus.STATUS_ARCHIVING
+                and download.status() != MirrorStatus.STATUS_EXTRACTING
+            ):
+                msg += (
+                    f"\n\n<code>{get_progress_bar_string(download)} {download.progress()}</code>"
+                    f"\n\n<b>Progress :</b> {get_readable_file_size(download.processed_bytes())}"
+                    f"\n\n<b>Size :</b> {download.size()}"
+                    f"\n\n<b>Speed :</b> {download.speed()} <b>| ETA :</b> {download.eta()} "
+                )
             if download.status() == MirrorStatus.STATUS_DOWNLOADING:
-                if hasattr(download, 'is_torrent'):
-                    msg += f"\n\n<b>Peer :</b> {download.aria_download().connections} " \
-                           f"<b>| Seed :</b> {download.aria_download().num_seeders}"
+                if hasattr(download, "is_torrent"):
+                    msg += (
+                        f"\n\n<b>Peer :</b> {download.aria_download().connections} "
+                        f"<b>| Seed :</b> {download.aria_download().num_seeders}"
+                    )
                 msg += f"\n\n<b>cancel :</b> <code>/cancel {download.gid()}</code>"
             msg += "\n\n"
         return msg
 
 
 def get_readable_time(seconds: int) -> str:
-    result = ''
+    result = ""
     (days, remainder) = divmod(seconds, 86400)
     days = int(days)
     if days != 0:
-        result += f'{days}d'
+        result += f"{days}d"
     (hours, remainder) = divmod(remainder, 3600)
     hours = int(hours)
     if hours != 0:
-        result += f'{hours}h'
+        result += f"{hours}h"
     (minutes, seconds) = divmod(remainder, 60)
     minutes = int(minutes)
     if minutes != 0:
-        result += f'{minutes}m'
+        result += f"{minutes}m"
     seconds = int(seconds)
-    result += f'{seconds}s'
+    result += f"{seconds}s"
     return result
 
 
@@ -139,6 +149,7 @@ def is_magnet(url: str):
     if magnet:
         return True
     return False
+
 
 def new_thread(fn):
     """To use as decorator to make a function call threaded.
