@@ -443,9 +443,9 @@ class GoogleDriveHelper:
         msg = ""
         fileName = self.escapes(str(fileName))
         # Create Search Query for API request.
-        query = f"'{parent_id}' in parents and (name contains '{fileName}')"
-        response = self.__service.files().list(supportsTeamDrives=True,
-                                               includeTeamDriveItems=True,
+        query = f"'{parent_id}' in parents and (name contains '{fileName}') and trashed = false"
+        response = self.__service.files().list(supportsAllDrives=True,
+                                               includeItemsFromAllDrives=True,
                                                q=query,
                                                spaces='drive',
                                                pageSize=20,
@@ -477,4 +477,4 @@ class GoogleDriveHelper:
                 msg += '\n'
             return msg
         else:
-            return ''
+            return None
