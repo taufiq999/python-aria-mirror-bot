@@ -557,7 +557,7 @@ class GoogleDriveHelper:
                 includeItemsFromAllDrives=True,
                 q=query,
                 spaces="drive",
-                pageSize=20,
+                pageSize=50,
                 fields="files(id, name, mimeType, size)",
                 orderBy="modifiedTime desc",
             )
