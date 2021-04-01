@@ -37,7 +37,7 @@ LOGGER = logging.getLogger(__name__)
 
 try:
     if bool(getConfig("_____REMOVE_THIS_LINE_____")):
-        logging.error("The README.md file there to be read! Exiting now!")
+        logging.error("The README.md file is there to be read! Exiting now!")
         exit()
 except KeyError:
     pass
@@ -91,20 +91,12 @@ try:
 except KeyError:
     INDEX_URL = None
 try:
-    IS_TEAM_DRIVE = getConfig("IS_TEAM_DRIVE")
-    if IS_TEAM_DRIVE.lower() == "true":
-        IS_TEAM_DRIVE = True
-    else:
-        IS_TEAM_DRIVE = False
+    IS_TEAM_DRIVE = getConfig("IS_TEAM_DRIVE").lower() == "true"
 except KeyError:
     IS_TEAM_DRIVE = False
 
 try:
-    USE_SERVICE_ACCOUNTS = getConfig("USE_SERVICE_ACCOUNTS")
-    if USE_SERVICE_ACCOUNTS.lower() == "true":
-        USE_SERVICE_ACCOUNTS = True
-    else:
-        USE_SERVICE_ACCOUNTS = False
+    USE_SERVICE_ACCOUNTS = getConfig("USE_SERVICE_ACCOUNTS").lower() == "true"
 except KeyError:
     USE_SERVICE_ACCOUNTS = False
 
