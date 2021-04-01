@@ -1,16 +1,20 @@
-import requests
-from telegram.ext import CommandHandler, run_async
-from telegram import InlineKeyboardMarkup
+import os
+import pathlib
+import subprocess
+import threading
 
-from bot import Interval, INDEX_URL, LOGGER
+import requests
 from bot import (
-    dispatcher,
     DOWNLOAD_DIR,
     DOWNLOAD_STATUS_UPDATE_INTERVAL,
+    INDEX_URL,
+    LOGGER,
+    Interval,
+    dispatcher,
     download_dict,
     download_dict_lock,
 )
-from bot.helper.ext_utils import fs_utils, bot_utils
+from bot.helper.ext_utils import bot_utils, fs_utils
 from bot.helper.ext_utils.bot_utils import setInterval
 from bot.helper.ext_utils.exceptions import (
     DirectDownloadLinkException,
@@ -28,14 +32,12 @@ from bot.helper.mirror_utils.status_utils.extract_status import ExtractStatus
 from bot.helper.mirror_utils.status_utils.tar_status import TarStatus
 from bot.helper.mirror_utils.status_utils.upload_status import UploadStatus
 from bot.helper.mirror_utils.upload_utils import gdriveTools
+from bot.helper.telegram_helper import button_builder
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import *
-from bot.helper.telegram_helper import button_builder
-import pathlib
-import os
-import subprocess
-import threading
+from telegram import InlineKeyboardMarkup
+from telegram.ext import CommandHandler, run_async
 
 ariaDlManager = AriaDownloadHelper()
 ariaDlManager.start_listener()

@@ -15,9 +15,8 @@ from os import popen
 from random import choice
 
 import requests
-from bs4 import BeautifulSoup
-
 from bot.helper.ext_utils.exceptions import DirectDownloadLinkException
+from bs4 import BeautifulSoup
 
 
 def direct_link_generator(link: str):
@@ -64,7 +63,6 @@ def zippy_share(url: str) -> str:
             dl_url = url_raw.replace(math, '"' + str(eval(math)) + '"')
             break
     dl_url = base_url + eval(dl_url)
-    name = urllib.parse.unquote(dl_url.split("/")[-1])
     return dl_url
 
 
@@ -89,7 +87,6 @@ def yandex_disk(url: str) -> str:
 def cm_ru(url: str) -> str:
     """cloud.mail.ru direct links generator
     Using https://github.com/JrMasterModelBuilder/cmrudl.py"""
-    reply = ""
     try:
         link = re.findall(r"\bhttps?://.*cloud\.mail\.ru\S+", url)[0]
     except IndexError:

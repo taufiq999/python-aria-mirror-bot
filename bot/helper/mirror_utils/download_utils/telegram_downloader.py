@@ -2,18 +2,18 @@ import logging
 import threading
 import time
 
-from pyrogram import Client
-
 from bot import (
     LOGGER,
-    download_dict,
-    download_dict_lock,
     TELEGRAM_API,
     TELEGRAM_HASH,
     USER_SESSION_STRING,
+    download_dict,
+    download_dict_lock,
 )
-from .download_helper import DownloadHelper
+from pyrogram import Client
+
 from ..status_utils.telegram_download_status import TelegramDownloadStatus
+from .download_helper import DownloadHelper
 
 global_lock = threading.Lock()
 GLOBAL_GID = set()

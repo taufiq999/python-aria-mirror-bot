@@ -1,10 +1,12 @@
-import sys
-from bot import aria2, LOGGER, DOWNLOAD_DIR
-import shutil
 import os
 import pathlib
-import magic
+import shutil
+import sys
 import tarfile
+
+import magic
+from bot import DOWNLOAD_DIR, LOGGER, aria2
+
 from .exceptions import NotSupportedExtractionArchive
 
 

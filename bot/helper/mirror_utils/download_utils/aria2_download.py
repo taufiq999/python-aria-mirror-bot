@@ -1,11 +1,13 @@
+import threading
+from time import sleep
+
+from aria2p import API
 from bot import aria2, download_dict_lock
 from bot.helper.ext_utils.bot_utils import *
-from .download_helper import DownloadHelper
 from bot.helper.mirror_utils.status_utils.aria_download_status import AriaDownloadStatus
 from bot.helper.telegram_helper.message_utils import *
-import threading
-from aria2p import API
-from time import sleep
+
+from .download_helper import DownloadHelper
 
 
 class AriaDownloadHelper(DownloadHelper):

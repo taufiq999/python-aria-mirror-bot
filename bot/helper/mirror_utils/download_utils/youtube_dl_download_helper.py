@@ -1,11 +1,13 @@
-from .download_helper import DownloadHelper
-import time
-from youtube_dl import YoutubeDL, DownloadError
-from bot import download_dict_lock, download_dict
-from ..status_utils.youtube_dl_download_status import YoutubeDLDownloadStatus
 import logging
 import re
 import threading
+import time
+
+from bot import download_dict, download_dict_lock
+from youtube_dl import DownloadError, YoutubeDL
+
+from ..status_utils.youtube_dl_download_status import YoutubeDLDownloadStatus
+from .download_helper import DownloadHelper
 
 LOGGER = logging.getLogger(__name__)
 
