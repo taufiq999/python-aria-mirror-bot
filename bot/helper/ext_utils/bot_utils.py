@@ -100,6 +100,7 @@ def get_readable_message():
             if (
                 download.status() != MirrorStatus.STATUS_ARCHIVING
                 and download.status() != MirrorStatus.STATUS_EXTRACTING
+                and download.status() != MirrorStatus.STATUS_WAITING
             ):
                 msg += (
                     f"\n<code>{get_progress_bar_string(download)} {download.progress()}</code>"
