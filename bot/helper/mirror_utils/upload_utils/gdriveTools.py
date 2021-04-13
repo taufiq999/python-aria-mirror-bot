@@ -14,6 +14,7 @@ from bot import (
     USE_SERVICE_ACCOUNTS,
     download_dict,
     parent_id,
+    LOGGER
 )
 from bot.helper.ext_utils.bot_utils import *
 from bot.helper.ext_utils.fs_utils import get_mime_type
@@ -27,7 +28,7 @@ from googleapiclient.http import MediaFileUpload
 from telegram import InlineKeyboardMarkup
 from tenacity import *
 
-LOGGER = logging.getLogger(__name__)
+
 logging.getLogger("googleapiclient.discovery").setLevel(logging.ERROR)
 SERVICE_ACCOUNT_INDEX = 0
 
@@ -387,7 +388,7 @@ class GoogleDriveHelper:
             msg = "Google drive ID could not be found in the provided link"
             return msg, ""
         msg = ""
-        LOGGER.info(f"File ID: {file_id}")
+        LOGGER.info(f"Cloning File ID: {file_id}")
         try:
             meta = self.getFileMetadata(file_id)
             if meta.get("mimeType") == self.__G_DRIVE_DIR_MIME_TYPE:

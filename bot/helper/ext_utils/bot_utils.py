@@ -3,9 +3,8 @@ import re
 import threading
 import time
 
-from bot import download_dict, download_dict_lock
+from bot import download_dict, download_dict_lock, LOGGER
 
-LOGGER = logging.getLogger(__name__)
 
 MAGNET_REGEX = r"magnet:\?xt=urn:btih:[a-zA-Z0-9]*"
 
