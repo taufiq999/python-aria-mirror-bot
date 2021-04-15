@@ -93,7 +93,9 @@ class MirrorListener(listeners.MirrorListeners):
                     download_dict[self.uid] = ExtractStatus(name, m_path, size)
                 pswd = self.pswd
                 if pswd is not None:
-                    archive_result = subprocess.run(["/usr/local/bin/pextract", m_path, pswd])
+                    archive_result = subprocess.run(
+                        ["/usr/local/bin/pextract", m_path, pswd]
+                    )
                 else:
                     archive_result = subprocess.run(["/usr/local/bin/extract", m_path])
                 if archive_result.returncode == 0:
@@ -239,24 +241,23 @@ def _mirror(bot, update, isTar=False, extract=False):
         if (
             not bot_utils.is_url(link)
             and not bot_utils.is_magnet(link)
-            or len(link) == 0
-        ):
-            if file is not None:
-                if file.mime_type != "application/x-bittorrent":
-                    listener = MirrorListener(bot, update, pswd, isTar, tag, extract)
-                    tg_downloader = TelegramDownloadHelper(listener)
-                    tg_downloader.add_download(
-                        reply_to, f"{DOWNLOAD_DIR}{listener.uid}/", name
-                    )
-                    sendStatusMessage(update, bot)
-                    if len(Interval) == 0:
-                        Interval.append(
-                            setInterval(
-                                DOWNLOAD_STATUS_UPDATE_INTERVAL, update_all_messages
-                            )
+            and file is not None
+        ) or len(link) == 0:
+            if file.mime_type != "application/x-bittorrent":
+                listener = MirrorListener(bot, update, pswd, isTar, tag, extract)
+                tg_downloader = TelegramDownloadHelper(listener)
+                tg_downloader.add_download(
+                    reply_to, f"{DOWNLOAD_DIR}{listener.uid}/", name
+                )
+                sendStatusMessage(update, bot)
+                if len(Interval) == 0:
+                    Interval.append(
+                        setInterval(
+                            DOWNLOAD_STATUS_UPDATE_INTERVAL, update_all_messages
                         )
-                    return
-                link = file.get_file().file_path
+                    )
+                return
+            link = file.get_file().file_path
     else:
         tag = None
     if not bot_utils.is_url(link) and not bot_utils.is_magnet(link):

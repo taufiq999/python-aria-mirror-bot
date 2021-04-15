@@ -4,6 +4,7 @@ import os
 import pickle
 import re
 import urllib.parse as urlparse
+from time import time
 from urllib.parse import parse_qs
 
 import requests
@@ -16,7 +17,7 @@ from bot import (
     download_dict,
     parent_id,
 )
-from bot.helper.ext_utils.bot_utils import *
+from bot.helper.ext_utils.bot_utils import get_readable_file_size, setInterval
 from bot.helper.ext_utils.fs_utils import get_mime_type, get_path_size
 from bot.helper.telegram_helper import button_builder
 from google.auth.transport.requests import Request
@@ -26,7 +27,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 from telegram import InlineKeyboardMarkup
-from tenacity import *
+from tenacity import *  # noqa # pylint: disable=unused-import
 
 logging.getLogger("googleapiclient.discovery").setLevel(logging.ERROR)
 SERVICE_ACCOUNT_INDEX = 0
@@ -330,8 +331,7 @@ class GoogleDriveHelper:
                         self.switchServiceAccount()
                         LOGGER.info(f"Got: {reason}, Trying Again.")
                         return self.copyFile(file_id, dest_id)
-                else:
-                    raise err
+                raise err
 
     @retry(
         wait=wait_exponential(multiplier=2, min=3, max=6),
@@ -532,7 +532,7 @@ class GoogleDriveHelper:
             )
         return build("drive", "v3", credentials=credentials, cache_discovery=False)
 
-    def escapes(self, str):
+    def escapes_(self, str):
         chars = ["\\", "'", '"', r"\a", r"\b", r"\f", r"\n", r"\r", r"\t"]
         for char in chars:
             str = str.replace(char, "\\" + char)
@@ -540,7 +540,7 @@ class GoogleDriveHelper:
 
     def drive_list(self, fileName):
         msg = ""
-        fileName = self.escapes(str(fileName))
+        fileName = self.escapes_(str(fileName))
         # Create Search Query for API request.
         query = f"'{parent_id}' in parents and (name contains '{fileName}') and trashed = false"
         response = (

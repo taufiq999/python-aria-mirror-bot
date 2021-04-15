@@ -22,7 +22,7 @@ def direct_link_generator(link: str):
     """ direct links generator """
     if not link:
         raise DirectDownloadLinkException("`No links found!`")
-    elif "zippyshare.com" in link:
+    if "zippyshare.com" in link:
         return zippy_share(link)
     elif "yadi.sk" in link:
         return yandex_disk(link)
@@ -56,7 +56,7 @@ def zippy_share(url: str) -> str:
     evaljs = EvalJs()
     setattr(evaljs, "x", None)
     evaljs.execute(js_content)
-    js_content = getattr(evaljs, "x")
+    js_content = evaljs.x
 
     return f"https://{link}.zippyshare.com{js_content}"
 

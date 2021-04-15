@@ -2,18 +2,15 @@ import threading
 from time import sleep
 
 from aria2p import API
-from bot import aria2, download_dict_lock
-from bot.helper.ext_utils.bot_utils import *
+from bot import LOGGER, aria2, download_dict, download_dict_lock
+from bot.helper.ext_utils.bot_utils import getDownloadByGid, is_magnet, new_thread
 from bot.helper.mirror_utils.status_utils.aria_download_status import AriaDownloadStatus
-from bot.helper.telegram_helper.message_utils import *
+from bot.helper.telegram_helper.message_utils import update_all_messages
 
 from .download_helper import DownloadHelper
 
 
 class AriaDownloadHelper(DownloadHelper):
-    def __init__(self):
-        super().__init__()
-
     @new_thread
     def __onDownloadStarted(self, api, gid):
         LOGGER.info(f"onDownloadStart: {gid}")

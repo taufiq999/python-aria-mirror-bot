@@ -65,9 +65,9 @@ def getDownloadByGid(gid):
                 status != MirrorStatus.STATUS_UPLOADING
                 and status != MirrorStatus.STATUS_ARCHIVING
                 and status != MirrorStatus.STATUS_EXTRACTING
+                and dl.gid() == gid
             ):
-                if dl.gid() == gid:
-                    return dl
+                return dl
     return None
 
 
