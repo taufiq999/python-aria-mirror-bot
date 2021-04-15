@@ -14,7 +14,7 @@ from bot import (
     USE_SERVICE_ACCOUNTS,
     download_dict,
     parent_id,
-    LOGGER
+    LOGGER,
 )
 from bot.helper.ext_utils.bot_utils import *
 from bot.helper.ext_utils.fs_utils import get_mime_type

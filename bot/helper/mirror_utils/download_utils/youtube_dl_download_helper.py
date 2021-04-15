@@ -10,7 +10,6 @@ from ..status_utils.youtube_dl_download_status import YoutubeDLDownloadStatus
 from .download_helper import DownloadHelper
 
 
-
 class MyLogger:
     def __init__(self, obj):
         self.obj = obj
