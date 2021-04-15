@@ -93,9 +93,9 @@ class MirrorListener(listeners.MirrorListeners):
                     download_dict[self.uid] = ExtractStatus(name, m_path, size)
                 pswd = self.pswd
                 if pswd is not None:
-                    archive_result = subprocess.run(["pextract", m_path, pswd])
+                    archive_result = subprocess.run(["/usr/local/bin/pextract", m_path, pswd])
                 else:
-                    archive_result = subprocess.run(["extract", m_path])
+                    archive_result = subprocess.run(["/usr/local/bin/extract", m_path])
                 if archive_result.returncode == 0:
                     threading.Thread(target=os.remove, args=(m_path,)).start()
                     LOGGER.info(f"Deleting archive : {m_path}")

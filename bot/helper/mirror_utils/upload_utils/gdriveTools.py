@@ -248,8 +248,7 @@ class GoogleDriveHelper:
                 msg = "No such file exist"
             else:
                 msg = "Something went wrong check log"
-        finally:
-            return msg
+        return msg
 
     def upload(self, file_name: str):
         if USE_SERVICE_ACCOUNTS:
