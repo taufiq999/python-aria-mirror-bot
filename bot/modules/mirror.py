@@ -256,8 +256,7 @@ def _mirror(bot, update, isTar=False, extract=False):
                             )
                         )
                     return
-                else:
-                    link = file.get_file().file_path
+                link = file.get_file().file_path
     else:
         tag = None
     if not bot_utils.is_url(link) and not bot_utils.is_magnet(link):

@@ -35,18 +35,16 @@ def cancel_mirror(update, context):
                 msg = "Mirror already have been cancelled"
                 sendMessage(msg, context.bot, update)
                 return
-            else:
-                msg = "Please reply to the /mirror message which was used to start the download or /cancel gid to cancel it!"
-                sendMessage(msg, context.bot, update)
-                return
+            msg = "Please reply to the /mirror message which was used to start the download or /cancel gid to cancel it!"
+            sendMessage(msg, context.bot, update)
+            return
     if dl.status() == "Uploading":
         sendMessage("Upload in Progress, Don't Cancel it.", context.bot, update)
         return
-    elif dl.status() == "Archiving":
+    if dl.status() == "Archiving":
         sendMessage("Archival in Progress, Don't Cancel it.", context.bot, update)
         return
-    else:
-        dl.download().cancel_download()
+    dl.download().cancel_download()
     sleep(1)  # Wait a Second For Aria2 To free Resources.
     clean_download(f"{DOWNLOAD_DIR}{mirror_message.message_id}/")
 

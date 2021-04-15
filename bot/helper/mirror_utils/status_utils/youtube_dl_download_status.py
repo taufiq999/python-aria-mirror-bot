@@ -24,8 +24,7 @@ class YoutubeDLDownloadStatus(Status):
     def processed_bytes(self):
         if self.obj.downloaded_bytes != 0:
             return self.obj.downloaded_bytes
-        else:
-            return get_path_size(f"{DOWNLOAD_DIR}{self.uid}")
+        return get_path_size(f"{DOWNLOAD_DIR}{self.uid}")
 
     def size_raw(self):
         return self.obj.size

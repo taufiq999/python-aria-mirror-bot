@@ -578,5 +578,4 @@ class GoogleDriveHelper:
                         msg += f' | <a href="{url}"> Index URL</a>'
                 msg += "\n"
             return msg
-        else:
-            return None
+        return None
