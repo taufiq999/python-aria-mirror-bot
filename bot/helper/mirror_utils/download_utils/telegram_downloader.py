@@ -4,14 +4,9 @@ import time
 
 from bot import (
     LOGGER,
-    TELEGRAM_API,
-    TELEGRAM_HASH,
-    USER_SESSION_STRING,
     app,
     download_dict,
-    download_dict_lock,
-)
-from pyrogram import Client
+    download_dict_lock)
 
 from ..status_utils.telegram_download_status import TelegramDownloadStatus
 from .download_helper import DownloadHelper

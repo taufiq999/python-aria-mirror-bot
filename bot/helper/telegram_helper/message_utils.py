@@ -16,7 +16,6 @@ from bot.helper.ext_utils.bot_utils import (
     get_readable_message,
 )
 from telegram import InlineKeyboardMarkup
-from telegram.error import BadRequest, TimedOut
 from telegram.message import Message
 from telegram.update import Update
 
