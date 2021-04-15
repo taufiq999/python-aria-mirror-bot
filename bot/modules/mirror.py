@@ -160,8 +160,12 @@ class MirrorListener(listeners.MirrorListeners):
             buttons.buildbutton("⚡Drive Link⚡", link)
             LOGGER.info(f"Done Uploading {download_dict[self.uid].name()}")
             if INDEX_URL is not None:
-                share_url = requests.utils.requote_uri(f'{INDEX_URL}/{download_dict[self.uid].name()}')
-                if os.path.isdir(f'{DOWNLOAD_DIR}/{self.uid}/{download_dict[self.uid].name()}'):
+                share_url = requests.utils.requote_uri(
+                    f"{INDEX_URL}/{download_dict[self.uid].name()}"
+                )
+                if os.path.isdir(
+                    f"{DOWNLOAD_DIR}/{self.uid}/{download_dict[self.uid].name()}"
+                ):
                     share_url += "/"
                 buttons.buildbutton("💥Index Link💥", share_url)
             if self.message.from_user.username:
