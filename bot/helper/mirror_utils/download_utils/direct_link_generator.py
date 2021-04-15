@@ -78,7 +78,6 @@ def yandex_disk(url: str) -> str:
         )
 
 
-
 def mediafire(url: str) -> str:
     """ MediaFire direct links generator """
     try:

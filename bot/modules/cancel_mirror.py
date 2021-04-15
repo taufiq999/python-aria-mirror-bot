@@ -26,7 +26,9 @@ def cancel_mirror(update, context):
         with download_dict_lock:
             keys = list(download_dict.keys())
             dl = download_dict[mirror_message.message_id]
-    if len(args) == 1 and (mirror_message is None or mirror_message.message_id not in keys):
+    if len(args) == 1 and (
+        mirror_message is None or mirror_message.message_id not in keys
+    ):
         if (
             BotCommands.MirrorCommand in mirror_message.text
             or BotCommands.TarMirrorCommand in mirror_message.text
