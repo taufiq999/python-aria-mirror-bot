@@ -96,10 +96,10 @@ def get_readable_message():
             msg += f"<b>Filename:</b> <code>{download.name()}</code>"
             msg += f"\n<b>Status:</b> <i>{download.status()}</i>"
 
-            if (
-                download.status() != MirrorStatus.STATUS_ARCHIVING
-                and download.status() != MirrorStatus.STATUS_EXTRACTING
-                and download.status() != MirrorStatus.STATUS_WAITING
+            if download.status() not in (
+                MirrorStatus.STATUS_ARCHIVING,
+                MirrorStatus.STATUS_EXTRACTING,
+                MirrorStatus.STATUS_WAITING,
             ):
                 msg += (
                     f"\n<code>{get_progress_bar_string(download)} {download.progress()}</code>"

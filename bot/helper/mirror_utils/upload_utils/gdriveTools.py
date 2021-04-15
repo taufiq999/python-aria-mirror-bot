@@ -207,17 +207,15 @@ class GoogleDriveHelper:
                         .get("reason")
                     )
                     if (
-                        reason == "userRateLimitExceeded"
-                        or reason == "dailyLimitExceeded"
+                        reason in ("userRateLimitExceeded", "dailyLimitExceeded")
+                        and USE_SERVICE_ACCOUNTS
                     ):
-                        if USE_SERVICE_ACCOUNTS:
-                            self.switchServiceAccount()
-                            LOGGER.info(f"Got: {reason}, Trying Again.")
-                            return self.upload_file(
-                                file_path, file_name, mime_type, parent_id
-                            )
-                    else:
-                        raise err
+                        self.switchServiceAccount()
+                        LOGGER.info(f"Got: {reason}, Trying Again.")
+                        return self.upload_file(
+                            file_path, file_name, mime_type, parent_id
+                        )
+                    raise err
         self._file_uploaded_bytes = 0
         # Insert new permissions
         if not IS_TEAM_DRIVE:
@@ -326,11 +324,13 @@ class GoogleDriveHelper:
                 reason = (
                     json.loads(err.content).get("error").get("errors")[0].get("reason")
                 )
-                if reason == "userRateLimitExceeded" or reason == "dailyLimitExceeded":
-                    if USE_SERVICE_ACCOUNTS:
-                        self.switchServiceAccount()
-                        LOGGER.info(f"Got: {reason}, Trying Again.")
-                        return self.copyFile(file_id, dest_id)
+                if (
+                    reason in ("userRateLimitExceeded", "dailyLimitExceeded")
+                    and USE_SERVICE_ACCOUNTS
+                ):
+                    self.switchServiceAccount()
+                    LOGGER.info(f"Got: {reason}, Trying Again.")
+                    return self.copyFile(file_id, dest_id)
                 raise err
 
     @retry(
