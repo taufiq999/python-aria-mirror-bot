@@ -24,16 +24,15 @@ def direct_link_generator(link: str):
         raise DirectDownloadLinkException("`No links found!`")
     if "zippyshare.com" in link:
         return zippy_share(link)
-    elif "yadi.sk" in link:
+    if "yadi.sk" in link:
         return yandex_disk(link)
-    elif "mediafire.com" in link:
+    if "mediafire.com" in link:
         return mediafire(link)
-    elif "osdn.net" in link:
+    if "osdn.net" in link:
         return osdn(link)
-    elif "github.com" in link:
+    if "github.com" in link:
         return github(link)
-    else:
-        raise DirectDownloadLinkException(f"No Direct link function found for {link}")
+    raise DirectDownloadLinkException(f"No Direct link function found for {link}")
 
 
 def zippy_share(url: str) -> str:
