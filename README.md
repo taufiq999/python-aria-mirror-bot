@@ -1,3 +1,6 @@
+[![DeepSource](https://deepsource.io/gh/sainAk/python-aria-mirror-bot.svg/?label=active+issues&show_trend=true)](https://deepsource.io/gh/sainAk/python-aria-mirror-bot/?ref=repository-badge)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+
 # Important - Read these points first
 - Original repo is https://github.com/lzzy12/python-aria-mirror-bot
 - I have collected some cool features from various repositories and merged them in one.
