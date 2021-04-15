@@ -5,7 +5,10 @@ from bot.helper.ext_utils.bot_utils import MirrorStatus, getDownloadByGid
 from bot.helper.ext_utils.fs_utils import clean_download
 from bot.helper.telegram_helper.bot_commands import BotCommands
 from bot.helper.telegram_helper.filters import CustomFilters
-from bot.helper.telegram_helper.message_utils import *
+from bot.helper.telegram_helper.message_utils import (
+    delete_all_messages,
+    sendMessage,
+)
 from telegram.ext import CommandHandler
 
 
