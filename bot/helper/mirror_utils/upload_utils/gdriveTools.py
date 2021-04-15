@@ -231,19 +231,17 @@ class GoogleDriveHelper:
         return download_url
 
     def deletefile(self, link: str):
-        try:
-            file_id = self.getIdFromUrl(link)
-        except (KeyError, IndexError):
-            msg = "Google drive ID could not be found in the provided link"
-            return msg
         msg = ""
         try:
+            file_id = self.getIdFromUrl(link)
             res = (
                 self.__service.files()
                 .delete(fileId=file_id, supportsTeamDrives=IS_TEAM_DRIVE)
                 .execute()
             )
             msg = "Successfully deleted"
+        except (KeyError, IndexError):
+            msg = "Google drive ID could not be found in the provided link"
         except HttpError as err:
             LOGGER.error(str(err))
             if "File not found" in str(err):

@@ -152,12 +152,12 @@ class YoutubeDLHelper(DownloadHelper):
             LOGGER.info("Download Cancelled by User!")
             self.onDownloadError("Download Cancelled by User!")
 
-    def add_download(self, link, path, qual, name):
-        pattern = "^.*(youtu\.be\/|youtube.com\/)(playlist?)"
+    def add_download(self, link: str, path, qual, filename):
+        pattern = r"^.*(youtu\.be\/|youtube.com\/)(playlist?)"
         if re.match(pattern, link):
             self.opts["ignoreerrors"] = True
         self.__onDownloadStart()
-        self.extractMetaData(link, qual, name)
+        self.extractMetaData(link, qual, filename)
         LOGGER.info(f"Downloading with YT-DL: {link}")
         self.__gid = f"{self.vid_id}{self.__listener.uid}"
         if qual == "audio":

@@ -2,6 +2,7 @@ import faulthandler
 import logging
 import os
 import socket
+import sys
 import threading
 import time
 
@@ -36,7 +37,7 @@ load_dotenv("config.env")
 try:
     if bool(getConfig("_____REMOVE_THIS_LINE_____")):
         LOGGER.error("The README.md file is there to be read! Exiting now!")
-        exit()
+        sys.exit(1)
 except KeyError:
     pass
 
@@ -77,7 +78,7 @@ try:
     TELEGRAM_HASH = getConfig("TELEGRAM_HASH")
 except KeyError as e:
     LOGGER.error("One or more env variables missing! Exiting now")
-    exit(1)
+    sys.exit(1)
 
 LOGGER.info("Generating USER_SESSION_STRING")
 app = Client(

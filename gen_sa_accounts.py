@@ -220,7 +220,7 @@ def serviceaccountfactory(
     serviceusage = build("serviceusage", "v1", credentials=creds)
 
     projs = None
-    while projs == None:
+    while projs is None:
         try:
             projs = _get_projects(cloud)
         except HttpError as e:
@@ -234,7 +234,7 @@ def serviceaccountfactory(
                         % proj_id
                     ).execute()
                 except HttpError as e:
-                    print(e._get_reason())
+                    print(loads(e.content)['error']['errors'][0]['message'])
                     input("Press Enter to retry.")
     if list_projects:
         return _get_projects(cloud)
@@ -387,7 +387,7 @@ if __name__ == "__main__":
             "and save the json file as credentials.json" % args.credentials
         )
         if len(options) < 1:
-            exit(-1)
+            sys.exit(1)
         else:
             i = 0
             print("Select a credentials file below.")
