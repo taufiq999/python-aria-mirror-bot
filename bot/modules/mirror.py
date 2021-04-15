@@ -59,7 +59,8 @@ class MirrorListener(listeners.MirrorListeners):
         # We are handling this on our own!
         pass
 
-    def clean(self):
+    @staticmethod
+    def clean():
         try:
             Interval[0].cancel()
             del Interval[0]
