@@ -2,11 +2,7 @@ import logging
 import threading
 import time
 
-from bot import (
-    LOGGER,
-    app,
-    download_dict,
-    download_dict_lock)
+from bot import LOGGER, app, download_dict, download_dict_lock
 
 from ..status_utils.telegram_download_status import TelegramDownloadStatus
 from .download_helper import DownloadHelper
