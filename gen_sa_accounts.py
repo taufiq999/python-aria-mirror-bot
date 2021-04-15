@@ -234,7 +234,7 @@ def serviceaccountfactory(
                         % proj_id
                     ).execute()
                 except HttpError as e:
-                    print(loads(e.content)['error']['errors'][0]['message'])
+                    print(loads(e.content)["error"]["errors"][0]["message"])
                     input("Press Enter to retry.")
     if list_projects:
         return _get_projects(cloud)
