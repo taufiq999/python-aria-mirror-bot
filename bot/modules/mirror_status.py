@@ -15,7 +15,6 @@ from telegram.ext import CommandHandler
 
 
 def mirror_status(update, context):
-    
     message = get_readable_message()
     if len(message) == 0:
         message = "No active downloads"

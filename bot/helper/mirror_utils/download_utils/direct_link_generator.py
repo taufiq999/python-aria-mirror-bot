@@ -41,13 +41,9 @@ def zippy_share(url: str) -> str:
     bs_obj = BeautifulSoup(response_content, "lxml")
 
     try:
-        js_script = bs_obj.find("div", {"class": "center",}).find_all(
-            "script"
-        )[1]
+        js_script = bs_obj.find("div", {"class": "center"}).find_all("script")[1]
     except:
-        js_script = bs_obj.find("div", {"class": "right",}).find_all(
-            "script"
-        )[0]
+        js_script = bs_obj.find("div", {"class": "right"}).find_all("script")[0]
 
     js_content = re.findall(r'\.href.=."/(.*?)";', str(js_script))
     js_content = 'var x = "/' + js_content[0] + '"'
