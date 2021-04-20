@@ -23,7 +23,7 @@ from bot.modules import (
     cancel_mirror,
     clone,
     delete,
-    list,
+    list_files,
     mirror,
     mirror_status,
     watch,
