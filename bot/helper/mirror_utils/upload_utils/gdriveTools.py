@@ -257,7 +257,7 @@ class GoogleDriveHelper:
         file_path = f"{file_dir}/{file_name}"
         size = get_readable_file_size(get_path_size(file_path))
         LOGGER.info("Uploading File: " + file_path)
-        self.start_time = time.time()
+        self.start_time = time()
         self.updater = setInterval(self.update_interval, self._on_upload_progress)
         if os.path.isfile(file_path):
             try:
