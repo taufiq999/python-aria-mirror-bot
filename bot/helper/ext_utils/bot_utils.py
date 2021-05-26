@@ -108,8 +108,7 @@ def get_readable_message():
                 )
             if download.status() == MirrorStatus.STATUS_DOWNLOADING:
                 try:
-                    msg += f"\n<b>Peer:</b> {download.aria_download().connections}<b> | \
-                        Seed:</b> {download.aria_download().num_seeders}"
+                    msg += f"\n<b>Peer:</b> {download.aria_download().connections}<b> | Seed:</b> {download.aria_download().num_seeders}"
                 except:
                     pass
                 msg += f"\n<b>cancel:</b> <code>/cancel {download.gid()}</code>"
