@@ -1,6 +1,15 @@
 import threading
 
-from bot import DOWNLOAD_DIR, DOWNLOAD_STATUS_UPDATE_INTERVAL, Interval, dispatcher
+from telegram import Bot, Update
+from telegram.ext import CommandHandler
+
+from bot import (
+    DOWNLOAD_DIR,
+    DOWNLOAD_STATUS_UPDATE_INTERVAL,
+    LOGGER,
+    Interval,
+    dispatcher,
+)
 from bot.helper.ext_utils.bot_utils import setInterval
 from bot.helper.mirror_utils.download_utils.youtube_dl_download_helper import (
     YoutubeDLHelper,
@@ -12,8 +21,6 @@ from bot.helper.telegram_helper.message_utils import (
     sendStatusMessage,
     update_all_messages,
 )
-from telegram import Bot
-from telegram.ext import CommandHandler
 
 from .mirror import MirrorListener
 
@@ -25,11 +32,11 @@ def _watch(bot: Bot, update, isTar=False):
     try:
         link = message_args[1]
     except IndexError:
-        msg = f"/{BotCommands.WatchCommand} [yt_dl supported link] [quality] |[CustomName] to mirror with youtube_dl.\n\n"
-        msg += "<b>Note :- Quality and custom name are optional</b>\n\nExample of quality :- audio, 144, 240, 360, 480, 720, 1080, 2160."
-        msg += "\n\nIf you want to use custom filename, plz enter it after |"
-        msg += f"\n\nExample :-\n<code>/{BotCommands.WatchCommand} https://youtu.be/ocX2FN1nguA 720 |My video bro</code>\n\n"
-        msg += "This file will be downloaded in 720p quality and it's name will be <b>My video bro</b>"
+        msg = f"/{BotCommands.WatchCommand} [youtube-dl supported link] [quality] |[CustomName] to mirror with youtube-dl.\n\n"
+        msg += "<b>Note: Quality and custom name are optional</b>\n\nExample of quality: audio, 144, 240, 360, 480, 720, 1080, 2160."
+        msg += "\n\nIf you want to use custom filename, enter it after |"
+        msg += f"\n\nExample:\n<code>/{BotCommands.WatchCommand} https://youtu.be/Pk_TthHfLeE 720 |Slam</code>\n\n"
+        msg += "This file will be downloaded in 720p quality and it's name will be <b>Slam</b>"
         sendMessage(msg, bot, update)
         return
     try:
@@ -78,14 +85,12 @@ def watch(update, context):
 mirror_handler = CommandHandler(
     BotCommands.WatchCommand,
     watch,
-    pass_args=True,
     filters=CustomFilters.authorized_chat | CustomFilters.authorized_user,
     run_async=True,
 )
 tar_mirror_handler = CommandHandler(
     BotCommands.TarWatchCommand,
     watchTar,
-    pass_args=True,
     filters=CustomFilters.authorized_chat | CustomFilters.authorized_user,
     run_async=True,
 )

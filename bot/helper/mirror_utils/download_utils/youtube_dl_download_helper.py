@@ -1,12 +1,16 @@
+import logging
 import re
 import threading
 import time
 
-from bot import download_dict, download_dict_lock, LOGGER
 from youtube_dl import DownloadError, YoutubeDL
+
+from bot import download_dict, download_dict_lock
 
 from ..status_utils.youtube_dl_download_status import YoutubeDLDownloadStatus
 from .download_helper import DownloadHelper
+
+LOGGER = logging.getLogger(__name__)
 
 
 class MyLogger:
@@ -35,7 +39,7 @@ class MyLogger:
 class YoutubeDLHelper(DownloadHelper):
     def __init__(self, listener):
         super().__init__()
-        self.__name = ""
+        self.name = ""
         self.__start_time = time.time()
         self.__listener = listener
         self.__gid = ""
@@ -103,14 +107,13 @@ class YoutubeDLHelper(DownloadHelper):
         self.__listener.onDownloadError(error)
 
     def extractMetaData(self, link, qual, name):
-        if "hotstar" or "sonyliv" in link:
+        if "hotstar" in link or "sonyliv" in link:
             self.opts["geo_bypass_country"] = "IN"
 
         with YoutubeDL(self.opts) as ydl:
             try:
                 result = ydl.extract_info(link, download=False)
-                if name == "":
-                    name = ydl.prepare_filename(result)
+                name = ydl.prepare_filename(result) if name else name
                 # noobway hack for changing extension after converting to mp3
                 if qual == "audio":
                     name = name.replace(".mp4", ".mp3").replace(".webm", ".mp3")
@@ -149,12 +152,12 @@ class YoutubeDLHelper(DownloadHelper):
             LOGGER.info("Download Cancelled by User!")
             self.onDownloadError("Download Cancelled by User!")
 
-    def add_download(self, link: str, path, qual, filename):
+    def add_download(self, link, path, qual, name):
         pattern = r"^.*(youtu\.be\/|youtube.com\/)(playlist?)"
         if re.match(pattern, link):
             self.opts["ignoreerrors"] = True
         self.__onDownloadStart()
-        self.extractMetaData(link, qual, filename)
+        self.extractMetaData(link, qual, name)
         LOGGER.info(f"Downloading with YT-DL: {link}")
         self.__gid = f"{self.vid_id}{self.__listener.uid}"
         if qual == "audio":

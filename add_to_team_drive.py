@@ -11,6 +11,7 @@ import time
 import googleapiclient.discovery
 import progress.bar
 from google.auth.transport.requests import Request
+from google.oauth2.service_account import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 stt = time.time()
@@ -44,7 +45,7 @@ did = args.drive_id
 credentials = glob.glob(args.credentials)
 
 try:
-    open(credentials[0])
+    open(credentials[0], "r")
     print(">> Found credentials.")
 except IndexError:
     print(">> No credentials found.")
@@ -86,7 +87,7 @@ batch = drive.new_batch_http_request()
 aa = glob.glob("%s/*.json" % acc_dir)
 pbar = progress.bar.Bar("Readying accounts", max=len(aa))
 for i in aa:
-    ce = json.loads(open(i).read())["client_email"]
+    ce = json.loads(open(i, "r").read())["client_email"]
     batch.add(
         drive.permissions().create(
             fileId=did,

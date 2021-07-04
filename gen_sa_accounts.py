@@ -27,7 +27,7 @@ sleep_time = 30
 # Create count SAs in project
 def _create_accounts(service, project, count):
     batch = service.new_batch_http_request(callback=_def_batch_resp)
-    for _ in range(count):
+    for i in range(count):
         aid = _generate_id("mfc-")
         batch.add(
             service.projects()
@@ -104,7 +104,9 @@ def _enable_services(service, projects, ste):
     batch = service.new_batch_http_request(callback=_def_batch_resp)
     for i in projects:
         for j in ste:
-            batch.add(service.services().enable(name=f"projects/{i}/services/{j}"))
+            batch.add(
+                service.services().enable(name="projects/%s/services/%s" % (i, j))
+            )
     batch.execute()
 
 
@@ -153,7 +155,7 @@ def _create_sa_keys(iam, projects, path):
                     .serviceAccounts()
                     .keys()
                     .create(
-                        name="projects/{}/serviceAccounts/{}".format(i, j["uniqueId"]),
+                        name="projects/%s/serviceAccounts/%s" % (i, j["uniqueId"]),
                         body={
                             "privateKeyType": "TYPE_GOOGLE_CREDENTIALS_FILE",
                             "keyAlgorithm": "KEY_ALG_RSA_2048",
@@ -190,15 +192,13 @@ def serviceaccountfactory(
     create_projects=None,
     max_projects=12,
     enable_services=None,
-    services=None,
+    services=["iam", "drive"],
     create_sas=None,
     delete_sas=None,
     download_keys=None,
 ):
-    if services is None:
-        services = ["iam", "drive"]
     selected_projects = []
-    proj_id = loads(open(credentials).read())["installed"]["project_id"]
+    proj_id = loads(open(credentials, "r").read())["installed"]["project_id"]
     creds = None
     if os.path.exists(token):
         with open(token, "rb") as t:
@@ -220,7 +220,7 @@ def serviceaccountfactory(
     serviceusage = build("serviceusage", "v1", credentials=creds)
 
     projs = None
-    while projs is None:
+    while projs == None:
         try:
             projs = _get_projects(cloud)
         except HttpError as e:
@@ -234,14 +234,14 @@ def serviceaccountfactory(
                         % proj_id
                     ).execute()
                 except HttpError as e:
-                    print(loads(e.content)["error"]["errors"][0]["message"])
+                    print(e._get_reason())
                     input("Press Enter to retry.")
     if list_projects:
         return _get_projects(cloud)
     if list_sas:
         return _list_sas(iam, list_sas)
     if create_projects:
-        print(f"creat projects: {create_projects}")
+        print("creat projects: {}".format(create_projects))
         if create_projects > 0:
             current_count = len(_get_projects(cloud))
             if current_count + create_projects <= max_projects:
@@ -387,7 +387,7 @@ if __name__ == "__main__":
             "and save the json file as credentials.json" % args.credentials
         )
         if len(options) < 1:
-            sys.exit(1)
+            exit(-1)
         else:
             i = 0
             print("Select a credentials file below.")
@@ -443,6 +443,6 @@ if __name__ == "__main__":
             if resp:
                 print("Service accounts in %s (%d):" % (args.list_sas, len(resp)))
                 for i in resp:
-                    print("  {} ({})".format(i["email"], i["uniqueId"]))
+                    print("  %s (%s)" % (i["email"], i["uniqueId"]))
             else:
                 print("No service accounts.")
